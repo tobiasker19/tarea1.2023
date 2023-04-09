@@ -1,0 +1,3 @@
+Comando para redis en puerto 8081
+redis-commander
+

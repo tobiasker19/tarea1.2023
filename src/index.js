@@ -1,68 +1,113 @@
-const express = require('express');
-const axios = require('axios');
-const redis = require('redis');
-const responseTime = require('response-time');
-const {promisify} = require('util')
-
-//Connecting to redis
-const client = redis.createClient({
-    host: "localhost",
-    port: 6379,
-});
-
-const GET_ASYNC = promisify(client.get).bind(client)
-const SET_ASYNC = promisify(client.set).bind(client)
+const express = require("express");
+const axios = require("axios");
+const { createClient } = require("redis");
+const responseTime = require("response-time");
 
 const app = express();
 
-(async () => {
-    await client.connect(); 
-});
-
-client.on('ready', () => {
-    console.log('Connected succesfully');
-});
-
-client.on("error", (err) => {
-    console.log(`${err}`);
+// Connecting to redis
+const client = createClient({
+  host: "127.0.0.1",
+  port: 6379,
 });
 
 app.use(responseTime());
 
-app.get("/games", async (req, res) => {
-    try{
-         //Response from cache
-        const reply = await GET_ASYNC("games");
-        if (reply) return res.json(JSON.parse(reply));
+// Get all characters
+app.get("/games", async (req, res, next) => {
+  try {
+    // Search Data in Redis
+    const reply = await client.get("games");
 
-        const response = await axios.get(
-        "https://www.freetogame.com/api/games"
-        );
+    // if exists returns from redis and finish with response
+    if (reply) return res.send(JSON.parse(reply));
 
-        await SET_ASYNC("games", JSON.stringify(response.data));
-        res.json(response.data);
-    } catch (error) {
-        console.log(error);
+    // Fetching Data from Rick and Morty API
+    const response = await axios.get(
+      "https://www.freetogame.com/api/games"
+    );
+
+    // Saving the results in Redis. The "EX" and 10, sets an expiration of 10 Seconds
+    const saveResult = await client.set(
+      "games",
+      JSON.stringify(response.data),
+      {
+        EX: 20, //TTL
+      }
+    );
+    console.log(saveResult)
+
+    // resond to client
+    res.send(response.data);
+  } catch (error) {
+    res.send(error.message);
+  }
+});
+
+// Get a single character
+app.get("/game/:id", async (req, res, next) => {
+  try {
+    const reply = await client.get(req.params.id);
+
+    if (reply) {
+      console.log("using cached data");
+      return res.send(JSON.parse(reply));
     }
-    });
 
-    app.get("/games?:category", async (req, res) => {
-        try{
-            const reply = await GET_ASYNC(req.params.category);
-            //const reply = await GET_ASYNC(req.originalUrl);
-            if (reply) return res.json(JSON.parse(reply));    
+    const response = await axios.get(
+      "https://www.freetogame.com/api/game?id=" + req.params.id
+    );
+    const saveResult = await client.set(
+      req.params.id,
+      JSON.stringify(response.data),
+      {
+        EX: 20,
+      }
+    );
 
-            const response = await axios.get(
-                'https://www.freetogame.com/api/games?' + req.params.category
-                );
+    console.log("saved data:", saveResult);
 
-            await SET_ASYNC(req.params.category, JSON.stringify(response.data)); 
-                
-            return res.json(response.data);    
-        } catch (error) {
-            return res.status(error.response.status).json({ message: error.message });
-        }
-        });    
+    res.send(response.data);
+  } catch (error) {
+    console.log(error);
+    res.send(error.message);
+  }
+});
 
-app.listen(3000);
-console.log("Server listen on port 3000");
+app.get("/games/category/:id", async (req, res, next) => {
+  try {
+    const reply = await client.get(req.params.id);
+
+    if (reply) {
+      console.log("using cached data");
+      return res.send(JSON.parse(reply));
+    }
+
+    const response = await axios.get(
+      "https://www.freetogame.com/api/games?category=" + req.params.id
+    );
+    const saveResult = await client.set(
+      req.params.id,
+      JSON.stringify(response.data),
+      {
+        EX: 20,
+      }
+    );
+
+    console.log("saved data:", saveResult);
+
+    res.send(response.data);
+  } catch (error) {
+    console.log(error);
+    res.send(error.message);
+  }
+});
+
+
+async function main() {
+  await client.connect();
+  app.listen(3000);
+  console.log("server listen on port 3000");
+}
+
+main();
