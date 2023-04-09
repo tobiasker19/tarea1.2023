@@ -1,3 +1,13 @@
+GET http://localhost:3000/games/category/shooter
 
-##
+###
 GET http://localhost:3000/game/452
+
+###
+GET http://localhost:3000/games/category/mmorpg
+
+###
+GET http://localhost:3000/game/4
+
+###
+GET http://localhost:3000/game/431
