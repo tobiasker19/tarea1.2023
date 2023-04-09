@@ -35,7 +35,7 @@ app.get("/games", async (req, res, next) => {
       "games",
       JSON.stringify(response.data),
       {
-        EX: 20, //TTL
+        EX: 200, //TTL
       }
     );
     console.log("GUARDANDO LA DATA EN CACHE:", saveResult);
@@ -64,7 +64,7 @@ app.get("/game/:id", async (req, res, next) => {
       req.params.id,
       JSON.stringify(response.data),
       {
-        EX: 20,
+        EX: 200,
       }
     );
 
@@ -93,7 +93,7 @@ app.get("/games/category/:id", async (req, res, next) => {
       req.params.id,
       JSON.stringify(response.data),
       {
-        EX: 20,
+        EX: 200,
       }
     );
 
@@ -121,7 +121,7 @@ app.get("/games/platform/:id", async (req, res, next) => {
       req.params.id,
       JSON.stringify(response.data),
       {
-        EX: 20,
+        EX: 200,
       }
     );
 
@@ -149,7 +149,7 @@ app.get("/games/sort/:id", async (req, res, next) => {
       req.params.id,
       JSON.stringify(response.data),
       {
-        EX: 20,
+        EX: 200,
       }
     );
 
