@@ -5,23 +5,10 @@ const responseTime = require("response-time");
 
 const app = express();
 
-const redisNodes = [
-  {
-    host: "127.0.0.1",
-    port: 6379,
-  },{
-    host: "127.0.0.1",
-    port: 6380,
-  },{
-    host: "127.0.0.1",
-    port: 6381,
-  },
-];
-
 // Connecting to redis
 const client = createClient({
-  redisMode: "cluster",
-  nodes: redisNodes,
+  host: "127.0.0.1",
+  port: 6379,
 });
 
 app.use(responseTime());
@@ -45,7 +32,7 @@ app.get("/games", async (req, res, next) => {
       "games",
       JSON.stringify(response.data),
       {
-        EX: 200, //TTL
+        EX: 20, //TTL
       }
     );
     console.log(saveResult)
@@ -74,7 +61,7 @@ app.get("/game/:id", async (req, res, next) => {
       req.params.id,
       JSON.stringify(response.data),
       {
-        EX: 200,
+        EX: 20,
       }
     );
 
@@ -103,7 +90,7 @@ app.get("/games/category/:id", async (req, res, next) => {
       req.params.id,
       JSON.stringify(response.data),
       {
-        EX: 200,
+        EX: 20,
       }
     );
 
@@ -131,7 +118,7 @@ app.get("/games/platform/:id", async (req, res, next) => {
       req.params.id,
       JSON.stringify(response.data),
       {
-        EX: 200,
+        EX: 20,
       }
     );
 
@@ -153,13 +140,13 @@ app.get("/games/sort/:id", async (req, res, next) => {
     }
 
     const response = await axios.get(
-      "https://www.freetogame.com/api/games?=" + req.params.id
+      "https://www.freetogame.com/api/games?sort-by=" + req.params.id
     );
     const saveResult = await client.set(
       req.params.id,
       JSON.stringify(response.data),
       {
-        EX: 200,
+        EX: 20,
       }
     );
 
