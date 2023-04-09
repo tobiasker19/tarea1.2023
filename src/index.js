@@ -20,10 +20,7 @@ app.get("/games", async (req, res, next) => {
     const reply = await client.get("games");
 
     // if exists returns from redis and finish with response
-    if (reply) {
-        console.log("using cached data");
-        return res.send(JSON.parse(reply));
-      }
+    if (reply) return res.send(JSON.parse(reply));
 
     // Fetching Data from Rick and Morty API
     const response = await axios.get(
@@ -38,7 +35,7 @@ app.get("/games", async (req, res, next) => {
         EX: 20, //TTL
       }
     );
-    console.log("saved data:", saveResult);
+    console.log(saveResult)
 
     // resond to client
     res.send(response.data);
