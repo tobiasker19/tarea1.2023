@@ -10,7 +10,7 @@ services:
     redis2:
       image: bitnami/redis:7.0.10
       ports: 
-        - "6380:6379"
+        - "6380:6380"
       environment:
         - ALLOW_EMPTY_PASSWORD=yes
         - REDIS_MAXMEMORY_POLICYallkeys=lru 
