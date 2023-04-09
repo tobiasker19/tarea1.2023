@@ -1,1 +1,1 @@
-GET https://www.freetogame.com/api/games
+GET https://localhost:3000/games
