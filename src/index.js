@@ -5,7 +5,7 @@ const responseTime = require("response-time");
 
 const app = express();
 
-// Connecting to redis
+// CONEXION A REDIS
 const client = createClient({
   host: "127.0.0.1",
   port: 6379,
@@ -13,21 +13,24 @@ const client = createClient({
 
 app.use(responseTime());
 
-// Get all characters
+// GET ALL GAMES
 app.get("/games", async (req, res, next) => {
   try {
-    // Search Data in Redis
+    // Busca la key "games"
     const reply = await client.get("games");
 
-    // if exists returns from redis and finish with response
-    if (reply) return res.send(JSON.parse(reply));
+    // Si la key existe, retorna su contenido sin consultar a la API
+    if (reply) {
+        console.log("USANDO LA DATA EN CACHE");
+        return res.send(JSON.parse(reply));
+      }
 
-    // Fetching Data from Rick and Morty API
+    // Recuperando data de la API
     const response = await axios.get(
       "https://www.freetogame.com/api/games"
     );
 
-    // Saving the results in Redis. The "EX" and 10, sets an expiration of 10 Seconds
+    // Guarda la data en redis. "EX" tiempo de expiracion de la data
     const saveResult = await client.set(
       "games",
       JSON.stringify(response.data),
@@ -35,22 +38,22 @@ app.get("/games", async (req, res, next) => {
         EX: 20, //TTL
       }
     );
-    console.log(saveResult)
+    console.log("GUARDANDO LA DATA EN CACHE:", saveResult);
 
-    // resond to client
+    // RES AL CLIENTE
     res.send(response.data);
   } catch (error) {
     res.send(error.message);
   }
 });
 
-// Get a single character
+// GET JUEGO EN ESPECIFICO
 app.get("/game/:id", async (req, res, next) => {
   try {
     const reply = await client.get(req.params.id);
 
     if (reply) {
-      console.log("using cached data");
+      console.log("USANDO LA DATA EN CACHE");
       return res.send(JSON.parse(reply));
     }
 
@@ -65,7 +68,7 @@ app.get("/game/:id", async (req, res, next) => {
       }
     );
 
-    console.log("saved data:", saveResult);
+    console.log("GUARDANDO LA DATA EN CACHE:", saveResult);
 
     res.send(response.data);
   } catch (error) {
@@ -79,7 +82,7 @@ app.get("/games/category/:id", async (req, res, next) => {
     const reply = await client.get(req.params.id);
 
     if (reply) {
-      console.log("using cached data");
+        console.log("USANDO LA DATA EN CACHE");
       return res.send(JSON.parse(reply));
     }
 
@@ -94,7 +97,7 @@ app.get("/games/category/:id", async (req, res, next) => {
       }
     );
 
-    console.log("saved data:", saveResult);
+    console.log("GUARDANDO LA DATA EN CACHE:", saveResult);
     res.send(response.data);
   } catch (error) {
     console.log(error);
@@ -107,7 +110,7 @@ app.get("/games/platform/:id", async (req, res, next) => {
     const reply = await client.get(req.params.id);
 
     if (reply) {
-      console.log("using cached data");
+      console.log("USANDO LA DATA EN CACHE");
       return res.send(JSON.parse(reply));
     }
 
@@ -122,7 +125,7 @@ app.get("/games/platform/:id", async (req, res, next) => {
       }
     );
 
-    console.log("saved data:", saveResult);
+    console.log("GUARDANDO LA DATA EN CACHE:", saveResult);
     res.send(response.data);
   } catch (error) {
     console.log(error);
@@ -135,7 +138,7 @@ app.get("/games/sort/:id", async (req, res, next) => {
     const reply = await client.get(req.params.id);
 
     if (reply) {
-      console.log("using cached data");
+      console.log("USANDO LA DATA EN CACHE");
       return res.send(JSON.parse(reply));
     }
 
@@ -150,7 +153,7 @@ app.get("/games/sort/:id", async (req, res, next) => {
       }
     );
 
-    console.log("saved data:", saveResult);
+    console.log("GUARDANDO LA DATA EN CACHE:", saveResult);
     res.send(response.data);
   } catch (error) {
     console.log(error);
@@ -162,7 +165,7 @@ app.get("/games/sort/:id", async (req, res, next) => {
 async function main() {
   await client.connect();
   app.listen(3000);
-  console.log("server listen on port 3000");
+  console.log("SERVIDOR ALOJADO EN PUERTO 3000");
 }
 
 main();
