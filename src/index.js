@@ -95,7 +95,62 @@ app.get("/games/category/:id", async (req, res, next) => {
     );
 
     console.log("saved data:", saveResult);
+    res.send(response.data);
+  } catch (error) {
+    console.log(error);
+    res.send(error.message);
+  }
+});
 
+app.get("/games/platform/:id", async (req, res, next) => {
+  try {
+    const reply = await client.get(req.params.id);
+
+    if (reply) {
+      console.log("using cached data");
+      return res.send(JSON.parse(reply));
+    }
+
+    const response = await axios.get(
+      "https://www.freetogame.com/api/games?platform=" + req.params.id
+    );
+    const saveResult = await client.set(
+      req.params.id,
+      JSON.stringify(response.data),
+      {
+        EX: 20,
+      }
+    );
+
+    console.log("saved data:", saveResult);
+    res.send(response.data);
+  } catch (error) {
+    console.log(error);
+    res.send(error.message);
+  }
+});
+
+app.get("/games/sort/:id", async (req, res, next) => {
+  try {
+    const reply = await client.get(req.params.id);
+
+    if (reply) {
+      console.log("using cached data");
+      return res.send(JSON.parse(reply));
+    }
+
+    const response = await axios.get(
+      "https://www.freetogame.com/api/games?sort-by=" + req.params.id
+    );
+    const saveResult = await client.set(
+      req.params.id,
+      JSON.stringify(response.data),
+      {
+        EX: 20,
+      }
+    );
+
+    console.log("saved data:", saveResult);
     res.send(response.data);
   } catch (error) {
     console.log(error);
