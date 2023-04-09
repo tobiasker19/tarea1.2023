@@ -6,7 +6,7 @@ const util = require('util');
 const app = express();
 
 // Configuramos la URL base de la API
-const BASE_URL = 'https://www.freetogame.com/api/games';
+const BASE_URL = 'https://www.freetogame.com/api';
 
 // Creamos un cliente de Redis
 const client = redis.createClient({
@@ -21,7 +21,7 @@ const setAsync = util.promisify(client.set).bind(client);
 // Definimos una función middleware para cachear las respuestas de la API
 async function cache(req, res, next) {
   const { page } = req.query;
-  const key = `games:${page || 1}`;
+  const key = `games:${platform || 'pc'}`;
 
   // Intentamos obtener la respuesta de Redis
   const cachedResponse = await getAsync(key);
