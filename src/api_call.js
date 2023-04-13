@@ -4,7 +4,7 @@ const axios = require('axios');
 const BASE_URL = 'https://www.freetogame.com/api';
 //const BASE_URL = 'http://localhost:3000';
 // Definimos el número de solicitudes a realizar
-const NUM_REQUESTS = 50;
+const NUM_REQUESTS = 10;
 
 // Creamos una función para realizar una solicitud a la API con un ID aleatorio
 async function makeRequest() {
@@ -29,16 +29,16 @@ async function run() {
   for (let i = 1; i <= NUM_REQUESTS; i++) {
     const { data, time } = await makeRequest();
     
-    if(time != 0){
+    if (data.id) {
       console.log(`Solicitud ${i}: ID ${data.id}, ${time}ms`);
-      results.push(time); // Agregamos el tiempo de respuesta a la matriz de resultados
-    }
-    else{
+      results.push(time);
+    } else {
       i=i-1;
     }
     
   }
   console.log(results); // Imprimimos la matriz de resultados en la consola
+  console.log(results.length);
 }
 
 // Ejecutamos el script
