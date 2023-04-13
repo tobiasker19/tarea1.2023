@@ -5,7 +5,7 @@ const BASE_URL = 'https://www.freetogame.com/api';
 //const BASE_URL = 'http://localhost:3000';
 
 // Definimos el número de solicitudes a realizar
-const NUM_REQUESTS = 10;
+const NUM_REQUESTS = 5000;
 
 // Creamos una función para realizar una solicitud a la API con un ID aleatorio
 async function makeRequest() {
