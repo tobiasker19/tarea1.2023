@@ -7,9 +7,7 @@ const app = express();
 
 // CONEXION A REDIS
 const client = createClient({
-  host: "127.0.0.1",
-  port: 6379,
-});
+  url: 'redis://127.0.0.1:6380'});
 
 app.use(responseTime());
 

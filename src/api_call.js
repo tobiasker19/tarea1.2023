@@ -1,10 +1,12 @@
 const axios = require('axios');
 
 // Configuramos la URL base de la API
-//const BASE_URL = 'https://www.freetogame.com/api';
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://www.freetogame.com/api';
+//const BASE_URL = 'http://localhost:3000';
+
+//const BASE_URL = 'https://sampleapis.com/api-list/movies';
 // Definimos el número de solicitudes a realizar
-const NUM_REQUESTS = 100;
+const NUM_REQUESTS = 5000;
 
 // Creamos una función para realizar una solicitud a la API
 async function makeRequest() {
