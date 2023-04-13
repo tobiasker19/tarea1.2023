@@ -1,9 +1,8 @@
-var PROTO_PATH = './metmuseum.proto';
-const express = require("express");
-const axios = require("axios");
+const express = require('express');
+const grpc = require("@grpc/grpc-js");
 const { createClient } = require("redis");
-var grpc = require('@grpc/grpc-js');
-var protoLoader = require('@grpc/proto-loader');
+var PROTO_PATH = './metmuseum.proto';
+var protoLoader = require("@grpc/proto-loader");
 
 // CONEXION A REDIS
 const client1 = createClient({
@@ -13,123 +12,42 @@ const client2 = createClient({
 const client3 = createClient({
   url: 'redis://127.0.0.1:6381'});
 
-  // GET Object EN ESPECIFICO
-app.get("/objects/:id", async (req, res, next) => {
-  if(req.params.id <=400){
-    try {
-      const reply = await client1.get(req.params.id);
-  
-      if (reply) {
-        console.log("USANDO LA DATA EN CACHE (Redis1)");
-        return res.send(JSON.parse(reply));
-      }
-  
-      const response = await axios.get(
-        "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + req.params.id
-      );
-      const saveResult = await client1.set(
-        req.params.id,
-        JSON.stringify(response.data),
-        {
-          EX: 10000,
-        }
-      );
-  
-      console.log("GUARDANDO LA DATA EN CACHE (Redis1):", saveResult);
-  
-      res.send(response.data);
-    } catch (error) {
-      //console.log(error);
-      res.send(error.message);
-    }
-  }
-  else if(400 < req.params.id && req.params.id <= 800){
-    try {
-      const reply = await client2.get(req.params.id);
-  
-      if (reply) {
-        console.log("USANDO LA DATA EN CACHE (Redis2)");
-        return res.send(JSON.parse(reply));
-      }
-  
-      const response = await axios.get(
-        "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + req.params.id
-      );
-      const saveResult = await client2.set(
-        req.params.id,
-        JSON.stringify(response.data),
-        {
-          EX: 10000,
-        }
-      );
-  
-      console.log("GUARDANDO LA DATA EN CACHE (Redis2):", saveResult);
-  
-      res.send(response.data);
-    } catch (error) {
-      res.send(error.message);
-    }
-  }
-  else if(800 < req.params.id && req.params.id <= 1200){
-    try {
-      const reply = await client3.get(req.params.id);
-  
-      if (reply) {
-        console.log("USANDO LA DATA EN CACHE (Redis3)");
-        return res.send(JSON.parse(reply));
-      }
-  
-      const response = await axios.get(
-        "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + req.params.id
-      );
-      const saveResult = await client3.set(
-        req.params.id,
-        JSON.stringify(response.data),
-        {
-          EX: 10000,
-        }
-      );
-  
-      console.log("GUARDANDO LA DATA EN CACHE (Redis3):", saveResult);
-  
-      res.send(response.data);
-    } catch (error) {
-      res.send(error.message);
-    }
-  }
-  
-});
-
-
-var packageDefinition = protoLoader.loadSync(
-    PROTO_PATH,
-    {keepCase: true,
-     longs: String,
-     enums: String,
-     defaults: true,
-     oneofs: true
-    });
-var metmuseum_proto = grpc.loadPackageDefinition(packageDefinition).metmuseum;
-
-function sayHello(call, callback) {
-  callback(null, {message: 'Hello ' + call.request.name});
-}
-
-function main() {
-  var server = new grpc.Server();
-  server.addService(metmuseum_proto.Greeter.service, {sayHello: sayHello});
-  server.bindAsync('0.0.0.0:50051', grpc.ServerCredentials.createInsecure(), () => {
-    server.start();
-    console.log("Server gRPC online en el puerto 50051");
-  });
-}
+const app = express();
 
 async function main() {
   await client1.connect();
   await client2.connect();
   await client3.connect();
-  app.listen(3000);
   console.log("Redis conectado");
 }
-
 main();
+
+var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
+    keepCase: true,
+    longs: String,
+    enums: String,
+    defaults: true,
+    oneofs: true
+});
+
+const metmuseum_proto = grpc.loadPackageDefinition(packageDefinition);
+
+const server = new grpc.Server();
+
+server.addService(metmuseum_proto.metmuseum_proto.service, {
+    Get: async (call, callback) => {
+        const reply = await client1.get(call.request.id);
+
+        callback(null, {Objects : reply});
+    }
+});
+
+
+server.bindAsync(
+    "127.0.0.1:50051",
+    grpc.ServerCredentials.createInsecure(),
+    (error, port) => {
+      console.log("Server running at http://127.0.0.1:50051");
+      server.start();
+    }
+  );

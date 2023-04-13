@@ -1,20 +1,17 @@
 syntax = "proto3";
 
-option java_multiple_files = true;
-option java_package = "io.grpc.examples.metmuseum";
-option java_outer_classname = "metmuseumProto";
-option objc_class_prefix = "HLW";
-
-package metmuseum;
-
-service GetById {
-  rpc GetObjectById (ObjectRequest) returns (Reply) {}
+service metmuseum_proto {
+  rpc Get (ObjectId) returns (Object) {}
 }
 
-message HelloRequest {
+message ObjectId {
   int32 id = 1;
 }
 
-message Reply {
-  string message = 1;
+message Object {
+  int32 id = 1;
+}
+
+message Objects {
+  repeated Object Objects = 1;
 }
