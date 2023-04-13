@@ -1,15 +1,10 @@
 import matplotlib.pyplot as plt
 
-# Aquí está el arreglo que se obtiene al compilar
-
-# TIEMPOS SIN CACHE
-# response_times = [
-#     
-# ]
-# TIEMPOS CON CACHE DISTRIBUIDA
-#response_times = [
-#    
-#]
+# Lee los datos del archivo txt y crea la lista response_times
+with open('resultados_sin_cache.txt', 'r') as f:
+    data = f.read()
+    values = data.split(',')
+    response_times = [float(value) for value in values]
 
 # Creamos una lista de números de solicitud para el eje x
 requests = list(range(1, len(response_times) + 1))
