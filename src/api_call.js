@@ -3,6 +3,7 @@ const axios = require('axios');
 // Configuramos la URL base de la API
 const BASE_URL = 'https://www.freetogame.com/api';
 //const BASE_URL = 'http://localhost:3000';
+
 // Definimos el número de solicitudes a realizar
 const NUM_REQUESTS = 10;
 
@@ -13,6 +14,7 @@ async function makeRequest() {
   
   try {
     const response = await axios.get(`${BASE_URL}/game?id=${id}`);
+    //const response = await axios.get(`${BASE_URL}/game/${id}`);
     const end = Date.now();
     return { data: response.data, time: end - start };
   } catch (error) {
