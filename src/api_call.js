@@ -39,7 +39,7 @@ async function run() {
   for (let i = 1; i <= NUM_REQUESTS; i++) {
     const { data, time } = await makeRequest();
     
-    if (data) {
+    if (data && time!=0) {
       console.log(`Solicitud ${i}: ${time}ms`);
       results.push(time);
     } else {
