@@ -1,26 +1,20 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_package = "io.grpc.examples.helloworld";
-option java_outer_classname = "HelloWorldProto";
+option java_package = "io.grpc.examples.metmuseum";
+option java_outer_classname = "metmuseumProto";
 option objc_class_prefix = "HLW";
 
-package helloworld;
+package metmuseum;
 
-// The greeting service definition.
-service Greeter {
-  // Sends a greeting
-  rpc SayHello (HelloRequest) returns (HelloReply) {}
-
-  rpc SayHelloStreamReply (HelloRequest) returns (stream HelloReply) {}
+service GetById {
+  rpc GetObjectById (ObjectRequest) returns (Reply) {}
 }
 
-// The request message containing the user's name.
 message HelloRequest {
-  string name = 1;
+  int32 id = 1;
 }
 
-// The response message containing the greetings
-message HelloReply {
+message Reply {
   string message = 1;
 }

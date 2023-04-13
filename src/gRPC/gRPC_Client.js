@@ -1,4 +1,4 @@
-var PROTO_PATH = __dirname + '/metmuseum.proto';
+var PROTO_PATH = './metmuseum.proto';
 
 var parseArgs = require('minimist');
 var grpc = require('@grpc/grpc-js');
@@ -11,9 +11,9 @@ var packageDefinition = protoLoader.loadSync(
      defaults: true,
      oneofs: true
     });
-var hello_proto = grpc.loadPackageDefinition(packageDefinition).helloworld;
+var metmuseum_proto = grpc.loadPackageDefinition(packageDefinition).metmuseum;
 
-function main() {
+
   var argv = parseArgs(process.argv.slice(2), {
     string: 'target'
   });
@@ -23,17 +23,12 @@ function main() {
   } else {
     target = 'localhost:50051';
   }
-  var client = new hello_proto.Greeter(target,
-                                       grpc.credentials.createInsecure());
-  var user;
-  if (argv._.length > 0) {
-    user = argv._[0]; 
-  } else {
-    user = 'world';
-  }
+  var client = new metmuseum_proto.Greeter(target,grpc.credentials.createInsecure());
+  /*
   client.sayHello({name: user}, function(err, response) {
     console.log('Greeting:', response.message);
   });
-}
+  */
 
-main();
+module.exports = client;
+

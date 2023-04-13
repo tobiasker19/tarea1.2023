@@ -13,9 +13,8 @@ const client2 = createClient({
 const client3 = createClient({
   url: 'redis://127.0.0.1:6381'});
 
-app.use(responseTime());
 
-// GET JUEGO EN ESPECIFICO
+// GET Object EN ESPECIFICO
 app.get("/objects/:id", async (req, res, next) => {
   if(req.params.id <=400){
     try {
