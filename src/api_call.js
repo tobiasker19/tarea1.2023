@@ -2,15 +2,15 @@ const axios = require('axios');
 const fs = require('fs');
 
 // Configuramos la URL base de la API
-const BASE_URL = 'https://collectionapi.metmuseum.org/public/collection/v1';
-//const BASE_URL = 'http://localhost:3000';
+//const BASE_URL = 'https://collectionapi.metmuseum.org/public/collection/v1';
+const BASE_URL = 'http://localhost:3000';
 
 // Definimos el número de solicitudes a realizar
 const NUM_REQUESTS = 5000;
 
 // Creamos una función para realizar una solicitud a la API con un ID aleatorio
 async function makeRequest() {
-  const id = Math.floor(Math.random() * 437133) + 1;
+  const id = Math.floor(Math.random() * 1200) + 1;
   const start = Date.now();
   
   try {

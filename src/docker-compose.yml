@@ -7,7 +7,7 @@ services:
       environment:
         - ALLOW_EMPTY_PASSWORD=yes
         - REDIS_MAXMEMORY_POLICYallkeys=lru
-      #command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+      command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
     redis2:
       image: bitnami/redis:7.0.10
       ports: 
@@ -15,7 +15,7 @@ services:
       environment:
         - ALLOW_EMPTY_PASSWORD=yes
         - REDIS_MAXMEMORY_POLICYallkeys=lru 
-      #command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
+      command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb
     redis3:
       image: bitnami/redis:7.0.10
       ports:
@@ -23,4 +23,4 @@ services:
       environment:
         - ALLOW_EMPTY_PASSWORD=yes
         - REDIS_MAXMEMORY_POLICYallkeys=lru    
-      #command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb    
+      command: /opt/bitnami/scripts/redis/run.sh --maxmemory 100mb    

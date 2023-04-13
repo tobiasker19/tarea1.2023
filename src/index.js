@@ -17,7 +17,7 @@ app.use(responseTime());
 
 // GET JUEGO EN ESPECIFICO
 app.get("/objects/:id", async (req, res, next) => {
-  if(req.params.id <=145711){
+  if(req.params.id <=400){
     try {
       const reply = await client1.get(req.params.id);
   
@@ -33,7 +33,7 @@ app.get("/objects/:id", async (req, res, next) => {
         req.params.id,
         JSON.stringify(response.data),
         {
-          EX: 100,
+          EX: 10000,
         }
       );
   
@@ -45,7 +45,7 @@ app.get("/objects/:id", async (req, res, next) => {
       res.send(error.message);
     }
   }
-  else if(145711 < req.params.id && req.params.id <= 291422){
+  else if(400 < req.params.id && req.params.id <= 800){
     try {
       const reply = await client2.get(req.params.id);
   
@@ -61,7 +61,7 @@ app.get("/objects/:id", async (req, res, next) => {
         req.params.id,
         JSON.stringify(response.data),
         {
-          EX: 100,
+          EX: 10000,
         }
       );
   
@@ -72,7 +72,7 @@ app.get("/objects/:id", async (req, res, next) => {
       res.send(error.message);
     }
   }
-  else if(291422 < req.params.id && req.params.id <= 437133){
+  else if(800 < req.params.id && req.params.id <= 1200){
     try {
       const reply = await client3.get(req.params.id);
   
@@ -88,7 +88,7 @@ app.get("/objects/:id", async (req, res, next) => {
         req.params.id,
         JSON.stringify(response.data),
         {
-          EX: 100,
+          EX: 10000,
         }
       );
   
