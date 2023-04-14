@@ -1,15 +1,90 @@
 syntax = "proto3";
 
 service metmuseum_proto {
-  rpc Get (ObjectId) returns (Object) {}
+  rpc Get (ObjectId) returns (Objects) {}
 }
 
 message ObjectId {
   int32 id = 1;
 }
 
+message constituent {
+  int32 constituentID = 1;
+  string role = 2;
+  string name = 3;
+  string constituentULAN_URL = 4;
+  string constituentWikidata_URL = 5;
+  string gender = 6;
+}
+message elementMeasurement{
+  float Depth = 1;
+  float Height = 2;
+  float Width = 3;
+}
+message measurement {
+  string elementName = 1;
+  string elementDescription = 2;
+  repeated elementMeasurement elementMeasurements = 3;
+}
+
 message Object {
-  int32 id = 1;
+  int32 objectID = 1;
+  bool isHighlight = 2;
+  string accessionNumber = 3;
+  string accessionYear = 4;
+  bool isPublicDomain = 5;
+  string primaryImage = 6;
+  string primaryImageSmall = 7;
+  repeated string additionalImages = 8;
+  repeated constituent constituents = 9;
+  string department = 10;
+  string objectName = 11;
+  string title = 12;
+  string culture = 13;
+  string period = 14;
+  string dynasty = 15;
+  string reign = 16;
+  string portfolio = 17;
+  string artistRole = 18;
+  string artistPrefix = 19;
+  string artistDisplayName = 20;
+  string artistDisplayBio = 21;
+  string artistSuffix = 22;
+  string artistAlphaSort = 23;
+  string artistNationality = 24;
+  string artistBeginDate = 25;
+  string artistEndDate = 26;
+  string artistGender = 27;
+  string artistWikidata_URL = 28;
+  string artistULAN_URL = 29;
+  string objectDate = 30;
+  int32 objectBeginDate = 31;
+  int32 objectEndDate = 32;
+  string medium = 33;
+  string dimensions = 34;
+  repeated measurement measurements = 35;
+  string creditLine = 36;
+  string geographyType = 37;
+  string city = 38;
+  string state = 39;
+  string county = 40;
+  string country = 41;
+  string region = 42;
+  string subregion = 43;
+  string locale = 44;
+  string locus = 45;
+  string excavation = 46;
+  string river = 47;
+  string classification = 48;
+  string rightsAndReproduction = 49;
+  string linkResource = 50;
+  string metadataDate = 51;
+  string repository = 52;
+  string objectURL = 53;
+  repeated string tags = 54;
+  string objectWikidata_URL = 55;
+  bool isTimelineWork = 56;
+  string GalleryNumber = 57;
 }
 
 message Objects {

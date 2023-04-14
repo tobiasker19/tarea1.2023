@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require("axios");
 const grpc = require("@grpc/grpc-js");
 const { createClient } = require("redis");
 var PROTO_PATH = './metmuseum.proto';
@@ -30,15 +31,19 @@ var packageDefinition = protoLoader.loadSync(PROTO_PATH, {
     oneofs: true
 });
 
-const metmuseum_proto = grpc.loadPackageDefinition(packageDefinition);
+const serviceProto = grpc.loadPackageDefinition(packageDefinition);
 
 const server = new grpc.Server();
 
-server.addService(metmuseum_proto.metmuseum_proto.service, {
+server.addService(serviceProto.metmuseum_proto.service, {
     Get: async (call, callback) => {
-        const reply = await client1.get(call.request.id);
-
-        callback(null, {Objects : reply});
+      
+      const response =  await axios.get(
+        "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + call.request.id
+      );
+      console.log(JSON.stringify(response.data));
+      const reply = JSON.stringify(response.data);
+      callback(null, { Objects: reply });
     }
 });
 

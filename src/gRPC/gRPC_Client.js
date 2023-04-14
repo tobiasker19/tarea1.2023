@@ -49,21 +49,27 @@ app.get("/objects/:id", async (req, res) => {
   
       if (reply) {
         console.log("USANDO LA DATA EN CACHE (Redis1)");
-        return res.send(JSON.parse(reply));
+        res.json(JSON.parse(reply));
       }
-  
-      
-      clientService.Get({id : req.params.id}, (error,items) =>{
+      else{
+        
+        clientService.Get({id : req.params.id}, (error,items) =>{
           if(error){
               res.status(400).json(error);
+              console.log("Error en el guardado de data (Redis1)");
+              console.log(error);
           }
           else{
               data = JSON.stringify(items)
+              
               client1.set(req.params.id, data)
               res.json(items);
               console.log("GUARDANDO LA DATA EN CACHE (Redis1)");
           }
       })
+      }
+      
+      
     } catch (error) {
       //console.log(error);
       res.send(error.message);
