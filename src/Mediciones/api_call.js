@@ -48,6 +48,10 @@ async function run() {
     
   }
   writeResultsToFile(results, 'resultados.txt');
+  let sum = 0;
+  for (let i=1; i< 5000; i++ ){
+    sum += results[i];
+  }
 }
 
 // Ejecutamos el script

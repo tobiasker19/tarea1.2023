@@ -8,25 +8,6 @@ message ObjectId {
   int32 id = 1;
 }
 
-message constituent {
-  int32 constituentID = 1;
-  string role = 2;
-  string name = 3;
-  string constituentULAN_URL = 4;
-  string constituentWikidata_URL = 5;
-  string gender = 6;
-}
-message elementMeasurement{
-  float Depth = 1;
-  float Height = 2;
-  float Width = 3;
-}
-message measurement {
-  string elementName = 1;
-  string elementDescription = 2;
-  repeated elementMeasurement elementMeasurements = 3;
-}
-
 message Object {
   int32 objectID = 1;
   bool isHighlight = 2;
@@ -35,8 +16,6 @@ message Object {
   bool isPublicDomain = 5;
   string primaryImage = 6;
   string primaryImageSmall = 7;
-  repeated string additionalImages = 8;
-  repeated constituent constituents = 9;
   string department = 10;
   string objectName = 11;
   string title = 12;
@@ -62,7 +41,6 @@ message Object {
   int32 objectEndDate = 32;
   string medium = 33;
   string dimensions = 34;
-  repeated measurement measurements = 35;
   string creditLine = 36;
   string geographyType = 37;
   string city = 38;
@@ -81,7 +59,6 @@ message Object {
   string metadataDate = 51;
   string repository = 52;
   string objectURL = 53;
-  repeated string tags = 54;
   string objectWikidata_URL = 55;
   bool isTimelineWork = 56;
   string GalleryNumber = 57;

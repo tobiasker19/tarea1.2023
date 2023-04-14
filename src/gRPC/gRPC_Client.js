@@ -55,14 +55,14 @@ app.get("/objects/:id", async (req, res) => {
         
         clientService.Get({id : req.params.id}, (error,items) =>{
           if(error){
-              res.status(400).json(error);
-              console.log("Error en el guardado de data (Redis1)");
-              console.log(error);
+              res.send(error.message);
+              console.log(`Error en el guardado de data (Redis1), no se encuentra el id ${req.params.id}`);
+              //console.log(error);
           }
           else{
               data = JSON.stringify(items)
               
-              client1.set(req.params.id, data)
+              client1.set(req.params.id, data,{EX: 10000,});
               res.json(items);
               console.log("GUARDANDO LA DATA EN CACHE (Redis1)");
           }
@@ -81,23 +81,25 @@ app.get("/objects/:id", async (req, res) => {
   
       if (reply) {
         console.log("USANDO LA DATA EN CACHE (Redis2)");
-        return res.send(JSON.parse(reply));
+        res.json(JSON.parse(reply));
       }
-  
-      const response = await axios.get(
-        "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + req.params.id
-      );
-      const saveResult = await client2.set(
-        req.params.id,
-        JSON.stringify(response.data),
-        {
-          EX: 10000,
-        }
-      );
-  
-      console.log("GUARDANDO LA DATA EN CACHE (Redis2):", saveResult);
-  
-      res.send(response.data);
+      else{
+        
+        clientService.Get({id : req.params.id}, (error,items) =>{
+          if(error){
+              res.send(error.message);
+              console.log(`Error en el guardado de data (Redis2), no se encuentra el id ${req.params.id}`);
+              //console.log(error);
+          }
+          else{
+              data = JSON.stringify(items)
+              
+              client2.set(req.params.id, data,{EX: 10000,});
+              res.json(items);
+              console.log("GUARDANDO LA DATA EN CACHE (Redis2)");
+          }
+      })
+      }
     } catch (error) {
       res.send(error.message);
     }
@@ -108,23 +110,25 @@ app.get("/objects/:id", async (req, res) => {
   
       if (reply) {
         console.log("USANDO LA DATA EN CACHE (Redis3)");
-        return res.send(JSON.parse(reply));
+        res.json(JSON.parse(reply));
       }
-  
-      const response = await axios.get(
-        "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + req.params.id
-      );
-      const saveResult = await client3.set(
-        req.params.id,
-        JSON.stringify(response.data),
-        {
-          EX: 10000,
-        }
-      );
-  
-      console.log("GUARDANDO LA DATA EN CACHE (Redis3):", saveResult);
-  
-      res.send(response.data);
+      else{
+        
+        clientService.Get({id : req.params.id}, (error,items) =>{
+          if(error){
+              res.send(error.message);
+              console.log(`Error en el guardado de data (Redis3), no se encuentra el id ${req.params.id}`);
+              //console.log(error);
+          }
+          else{
+              data = JSON.stringify(items)
+              
+              client3.set(req.params.id, data,{EX: 10000,});
+              res.json(items);
+              console.log("GUARDANDO LA DATA EN CACHE (Redis3)");
+          }
+      })
+      }
     } catch (error) {
       res.send(error.message);
     }

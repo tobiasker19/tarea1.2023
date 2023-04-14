@@ -37,16 +37,29 @@ const server = new grpc.Server();
 
 server.addService(serviceProto.metmuseum_proto.service, {
     Get: async (call, callback) => {
+      let reply = [];
+      try{
+        const response =  await axios.get(
+          "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + call.request.id
+        );
+        
+        reply.push(response.data);
+        //console.log(reply)
+        callback(null, { Objects: reply });
+      }
+      catch (error) {
+        if (error.response && error.response.status === 404) {
+          callback({
+            code: grpc.status.NOT_FOUND,
+            message: 'Object not found'
+          });
+        } else {
+          callback(error);
+        }
+      }
       
-      const response =  await axios.get(
-        "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + call.request.id
-      );
-      console.log(JSON.stringify(response.data));
-      const reply = JSON.stringify(response.data);
-      callback(null, { Objects: reply });
     }
 });
-
 
 server.bindAsync(
     "127.0.0.1:50051",
