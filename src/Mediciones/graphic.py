@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 # Lee los datos del archivo txt y crea la lista response_times
-with open('resultados_con_cache.txt', 'r') as f:
+with open('resultados_sin_cache.txt', 'r') as f:
     data = f.read()
     values = data.split(',')
     response_times = [float(value) for value in values]

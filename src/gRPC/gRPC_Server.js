@@ -39,10 +39,13 @@ server.addService(serviceProto.metmuseum_proto.service, {
     Get: async (call, callback) => {
       let reply = [];
       try{
+        //const start = Date.now();
         const response =  await axios.get(
           "https://collectionapi.metmuseum.org/public/collection/v1/objects/" + call.request.id
         );
-        
+        //const end = Date.now();
+        //time = end-start;
+        //console.log(`Pasando por el server ${time}`)
         reply.push(response.data);
         //console.log(reply)
         callback(null, { Objects: reply });

@@ -122,12 +122,12 @@ app.get("/objects/:id", async (req, res) => {
           }
           else{
               data = JSON.stringify(items)
-              
               client3.set(req.params.id, data,{EX: 10000,});
               res.json(items);
               console.log("GUARDANDO LA DATA EN CACHE (Redis3)");
           }
       })
+      
       }
     } catch (error) {
       res.send(error.message);
