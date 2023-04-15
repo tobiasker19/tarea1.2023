@@ -1,20 +1,33 @@
+import numpy as np
 import matplotlib.pyplot as plt
 
-# Lee los datos del archivo txt y crea la lista response_times
-with open('resultados_sin_cache.txt', 'r') as f:
-    data = f.read()
-    values = data.split(',')
-    response_times = [float(value) for value in values]
+#Cargo la data
 
-# Creamos una lista de números de solicitud para el eje x
-requests = list(range(1, len(response_times) + 1))
+REST_sin_cache = np.loadtxt('src\Mediciones\REST_sin_cache.txt',delimiter=',')
+gRPC_sin_cache = np.loadtxt('src\Mediciones\gRPC_sin_cache.txt',delimiter=',')
+API= np.loadtxt('src\Mediciones\API_DIRECTA.txt',delimiter=',')
+gRPC_con_cache_2mb_lru= np.loadtxt('src\Mediciones\gRPC_con_cache_2mb_lru.txt',delimiter=',')
+gRPC_con_cache_2mb_lfu= np.loadtxt('src\Mediciones\gRPC_con_cache_2mb_lfu.txt',delimiter=',')
+gRPC_con_cache_2mb_random= np.loadtxt('src\Mediciones\gRPC_con_cache_2mb_random.txt',delimiter=',')
+REST_con_cache_2mb_lru= np.loadtxt('src\Mediciones\REST_con_cache_2mb_lru.txt',delimiter=',')
+REST_con_cache_1mb_lru= np.loadtxt('src\Mediciones\REST_con_cache_1mb_lru.txt',delimiter=',')
+gRPC_con_cache_1mb_lru= np.loadtxt('src\Mediciones\gRPC_con_cache_1mb_lru.txt',delimiter=',')
+fig, ax = plt.subplots()
 
-# Creamos el diagrama de líneas
-plt.plot(requests, response_times)
+#ax.plot(REST_sin_cache, color = 'blue', label = 'REST sin caché, promedio: 666ms')
+#ax.plot(gRPC_sin_cache, color = 'red', label = 'gRPC sin caché, promedio: 560ms')
 
-# Agregamos etiquetas al eje x y al eje y
-plt.xlabel('Número de solicitud')
-plt.ylabel('Tiempo de respuesta (ms)')
+#ax.plot(API, color = 'blue', label = 'API directamente')
 
-# Mostramos el diagrama
+#ax.plot(REST_con_cache_2mb_lru, color = 'blue', label = 'REST_con_cache_2mb_lru')
+#ax.plot(gRPC_con_cache_2mb_lru, color = 'red', label = 'gRPC_con_cache_2mb_lru')
+#ax.plot(gRPC_con_cache_2mb_lfu, color = 'red', label = 'gRPC_con_cache_2mb_lfu')
+#ax.plot(gRPC_con_cache_2mb_random, color = 'black', label = 'gRPC_con_cache_2mb_random')
+
+ax.plot(REST_con_cache_1mb_lru, color = 'blue', label = 'REST_con_cache_1mb_lru')
+ax.plot(gRPC_con_cache_1mb_lru, color = 'red', label = 'gRPC_con_cache_1mb_lru')
+
+ax.set_xlabel('Numero de solicitud')
+ax.set_ylabel('Tiempo (ms)')
+ax.legend()
 plt.show()

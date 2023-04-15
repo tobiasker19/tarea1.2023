@@ -50,7 +50,8 @@ async function run() {
   }
   promedio = suma/NUM_REQUESTS;
   console.log(`Promedio ${promedio}ms`);
-  writeResultsToFile(results, 'resultados.txt');
+  writeResultsToFile(results, 'REST_sin_cache.txt');
+  //writeResultsToFile(results, 'gRPC_sin_cache.txt');
   let sum = 0;
   for (let i=1; i< NUM_REQUESTS; i++ ){
     sum += results[i];

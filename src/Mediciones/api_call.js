@@ -47,9 +47,9 @@ async function run() {
     }
     
   }
-  writeResultsToFile(results, 'resultados.txt');
+  writeResultsToFile(results, 'gRPC_con_cache_1mb_lru.txt');
   let sum = 0;
-  for (let i=1; i< 5000; i++ ){
+  for (let i=1; i< NUM_REQUESTS; i++ ){
     sum += results[i];
   }
 }
