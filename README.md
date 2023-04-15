@@ -8,12 +8,12 @@ docker-compose up
 Pruebas con REST:
 cd .\src\REST\
 node .\index.js
-cd ..\Mediciones\
+cd .\src\Mediciones\
 node .\api_call.js
 
 Pruebas con gRPC
 cd .\src\gRPC\
 node .\gRPC_Server.js
 node .\gRPC_Client.js
-cd ..\Mediciones\
+cd .src\Mediciones\
 node .\api_call.js

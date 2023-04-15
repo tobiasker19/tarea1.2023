@@ -10,6 +10,9 @@ gRPC_con_cache_2mb_lru= np.loadtxt('src\Mediciones\gRPC_con_cache_2mb_lru.txt',d
 gRPC_con_cache_2mb_lfu= np.loadtxt('src\Mediciones\gRPC_con_cache_2mb_lfu.txt',delimiter=',')
 gRPC_con_cache_2mb_random= np.loadtxt('src\Mediciones\gRPC_con_cache_2mb_random.txt',delimiter=',')
 REST_con_cache_2mb_lru= np.loadtxt('src\Mediciones\REST_con_cache_2mb_lru.txt',delimiter=',')
+REST_con_cache_1mb_lfu= np.loadtxt('src\Mediciones\REST_con_cache_1mb_lfu.txt',delimiter=',')
+REST_con_cache_1mb_random= np.loadtxt('src\Mediciones\REST_con_cache_1mb_random.txt',delimiter=',')
+REST_con_cache_1mb_lru= np.loadtxt('src\Mediciones\REST_con_cache_2mb_lru.txt',delimiter=',')
 REST_con_cache_1mb_lru= np.loadtxt('src\Mediciones\REST_con_cache_1mb_lru.txt',delimiter=',')
 gRPC_con_cache_1mb_lru= np.loadtxt('src\Mediciones\gRPC_con_cache_1mb_lru.txt',delimiter=',')
 fig, ax = plt.subplots()
@@ -20,12 +23,19 @@ fig, ax = plt.subplots()
 #ax.plot(API, color = 'blue', label = 'API directamente')
 
 #ax.plot(REST_con_cache_2mb_lru, color = 'blue', label = 'REST_con_cache_2mb_lru')
-#ax.plot(gRPC_con_cache_2mb_lru, color = 'red', label = 'gRPC_con_cache_2mb_lru')
-#ax.plot(gRPC_con_cache_2mb_lfu, color = 'red', label = 'gRPC_con_cache_2mb_lfu')
+
+
 #ax.plot(gRPC_con_cache_2mb_random, color = 'black', label = 'gRPC_con_cache_2mb_random')
+#ax.plot(gRPC_con_cache_2mb_lru, color = 'blue', label = 'gRPC_con_cache_2mb_lru')
+#ax.plot(gRPC_con_cache_2mb_lfu, color = 'red', label = 'gRPC_con_cache_2mb_lfu')
+
 
 ax.plot(REST_con_cache_1mb_lru, color = 'blue', label = 'REST_con_cache_1mb_lru')
-ax.plot(gRPC_con_cache_1mb_lru, color = 'red', label = 'gRPC_con_cache_1mb_lru')
+ax.plot(REST_con_cache_1mb_lfu, color = 'red', label = 'REST_con_cache_1mb_lfu')
+ax.plot(REST_con_cache_1mb_random, color = 'black', label = 'REST_con_cache_1mb_random')
+
+#ax.plot(REST_con_cache_1mb_lru, color = 'blue', label = 'REST_con_cache_1mb_lru')
+#ax.plot(gRPC_con_cache_1mb_lru, color = 'red', label = 'gRPC_con_cache_1mb_lru')
 
 ax.set_xlabel('Numero de solicitud')
 ax.set_ylabel('Tiempo (ms)')
