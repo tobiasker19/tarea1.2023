@@ -5,6 +5,8 @@ const responseTime = require("response-time");
 
 const app = express();
 
+app.use(responseTime());
+
 // CONEXION A REDIS
 const client1 = createClient({
   url: 'redis://127.0.0.1:6379'});
