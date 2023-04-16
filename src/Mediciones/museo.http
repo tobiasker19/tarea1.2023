@@ -1,14 +1,18 @@
 ###
-GET http://localhost:3000/games/category/shooter
+GET http://localhost:3000/objects/10
 
 ###
-GET http://localhost:3000/game/452
+GET http://localhost:3000/objects/399
 
 ###
-GET http://localhost:3000/games/category/mmorpg
+GET http://localhost:3000/objects/450
 
 ###
-GET http://localhost:3000/game/4
+GET http://localhost:3000/objects/800
 
 ###
-GET http://localhost:3000/game/431
+GET http://localhost:3000/objects/1000
+
+###
+GET http://localhost:3000/objects/1106
+

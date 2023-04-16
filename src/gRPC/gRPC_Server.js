@@ -15,6 +15,8 @@ const client3 = createClient({
 
 const app = express();
 
+app.use(responseTime());
+
 async function main() {
   await client1.connect();
   await client2.connect();

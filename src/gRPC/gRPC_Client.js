@@ -15,6 +15,8 @@ const client2 = createClient({
 const client3 = createClient({
   url: 'redis://127.0.0.1:6381'});
 
+app.use(responseTime());  
+
 const app = express();
 
 async function main() {
